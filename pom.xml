@@ -100,7 +100,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>6.0.5</version>
+            <version>5.1.39</version>
         </dependency>
     </dependencies>
 
@@ -146,7 +146,7 @@
                             </dependency>
                         </dependencies>
                         <configuration>
-                            <groups>universal,stress</groups>
+                            <groups>universal,central</groups>
                         </configuration>
                         <executions>
                             <execution>

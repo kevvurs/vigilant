@@ -25,4 +25,15 @@
             </map>
         </constructor-arg>
     </bean>
+
+    <!-- Spring Data -->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="url" value="${vigil.data.database}"/>
+        <property name="username" value="${vigil.data.user}"/>
+        <property name="password" value="${vigil.data.pass}"/>
+    </bean>
+
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <constructor-arg ref="dataSource"/>
+    </bean>
 </beans>

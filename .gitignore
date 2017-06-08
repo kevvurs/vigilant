@@ -1,3 +1,4 @@
 *.properties
 vigilant.iml
 /.idea/
+/target/
