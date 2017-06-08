@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       					   http://www.springframework.org/schema/beans/spring-beans.xsd
+       					   http://www.springframework.org/schema/context
+       					   http://www.springframework.org/schema/context/spring-context.xsd">
+    <context:annotation-config/>
+    <context:component-scan base-package="com.boomerang.vigilant">
+        <context:include-filter type="annotation" expression="javax.ws.rs.ext.Provider"/>
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+    </context:component-scan>
+    <context:annotation-config/>
+    <context:property-placeholder location="classpath:application.properties"/>
+
+    <!-- Default configuration -->
+    <bean id="mission" class="java.util.HashMap">
+        <constructor-arg>
+            <map key-type="java.lang.String" value-type="java.lang.Boolean">
+                <entry key="politics" value="true"/>
+                <entry key="science" value="true"/>
+                <entry key="religion" value="false"/>
+                <entry key="breaking" value="true"/>
+            </map>
+        </constructor-arg>
+    </bean>
+
+    <!-- Spring Data -->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="url" value="${vigil.data.database}"/>
+        <property name="username" value="${vigil.data.user}"/>
+        <property name="password" value="${vigil.data.pass}"/>
+    </bean>
+
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <constructor-arg ref="dataSource"/>
+    </bean>
+
+    <bean id="exporter" class="org.springframework.jmx.export.MBeanExporter">
+        <property name="assembler" ref="assembler"/>
+        <property name="namingStrategy" ref="namingStrategy"/>
+        <property name="autodetect" value="true"/>
+    </bean>
+
+    <bean id="jmxAttributeSource"
+          class="org.springframework.jmx.export.annotation.AnnotationJmxAttributeSource"/>
+    <bean id="assembler"
+          class="org.springframework.jmx.export.assembler.MetadataMBeanInfoAssembler">
+        <property name="attributeSource" ref="jmxAttributeSource"/>
+    </bean>
+    <bean id="namingStrategy"
+          class="org.springframework.jmx.export.naming.MetadataNamingStrategy">
+        <property name="attributeSource" ref="jmxAttributeSource"/>
+    </bean>
+</beans>
